@@ -8,6 +8,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Configuration
 public class WebConfig {
@@ -17,7 +18,16 @@ public class WebConfig {
     @Bean
     CorsFilter corsFilter() {
         var configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(allowedOrigins.split(",")));
+        configuration.setAllowedOrigins(Stream.concat(
+                        Stream.of(
+                                "http://localhost:5173",
+                                "https://freshfold-laundry-frontend.vercel.app",
+                                "https://lavkush25031207-maker.github.io"),
+                        Stream.of(allowedOrigins.split(",")))
+                .map(String::trim)
+                .filter(origin -> !origin.isBlank())
+                .distinct()
+                .toList());
         configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         var source = new UrlBasedCorsConfigurationSource();
