@@ -49,11 +49,17 @@ Never commit real database passwords, admin credentials, or Google Maps keys.
 The root `render.yaml` and `backend/Dockerfile` configure the Spring Boot service.
 
 1. In Render, choose **New > Blueprint** and connect this repository.
-2. Render creates both `freshfold-api` and the managed `freshfold-db` PostgreSQL database from `render.yaml`.
+2. The API can reuse an existing Render PostgreSQL database through an isolated `freshfold` schema.
 3. Set these environment variables when prompted:
 
 | Variable | Example |
 | --- | --- |
+| `DB_HOST` | Existing Render PostgreSQL internal hostname |
+| `DB_PORT` | `5432` |
+| `DB_NAME` | Existing database name |
+| `DB_USER` | Existing database username |
+| `DB_PASSWORD` | Existing database password |
+| `DB_SCHEMA` | `freshfold` |
 | `APP_ADMIN_EMAIL` | Private production admin email |
 | `APP_ADMIN_PASSWORD` | Strong production password |
 | `CORS_ALLOWED_ORIGINS` | `https://your-app.vercel.app,https://USER.github.io` |
@@ -64,7 +70,7 @@ Render supplies `PORT` automatically. Verify deployment at:
 https://YOUR-RENDER-SERVICE.onrender.com/api/health
 ```
 
-The response should be `{"status":"ok"}`. Database host, port, name, user, and password are connected automatically by the Blueprint. Flyway creates and seeds PostgreSQL during startup.
+The response should be `{"status":"ok"}`. Flyway creates the isolated `freshfold` schema and seeds it during startup without modifying tables in other schemas.
 
 ## 3A. Deploy the frontend on Vercel
 
