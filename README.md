@@ -6,7 +6,7 @@ Full-stack laundry pickup application with customer authentication, booking, liv
 
 - **Frontend:** React, Vite, React Router, responsive CSS
 - **Backend:** Java 21, Spring Boot, Spring Security, JDBC, Flyway
-- **Database:** MySQL 8+
+- **Database:** PostgreSQL 16+
 - **Deployment:** Render (API), Vercel or GitHub Pages (frontend)
 
 ## Local development
@@ -48,15 +48,12 @@ Never commit real database passwords, admin credentials, or Google Maps keys.
 
 The root `render.yaml` and `backend/Dockerfile` configure the Spring Boot service.
 
-1. Create a hosted MySQL database on a provider such as Aiven, Railway, or DigitalOcean.
-2. In Render, choose **New > Blueprint** and connect this repository.
+1. In Render, choose **New > Blueprint** and connect this repository.
+2. Render creates both `freshfold-api` and the managed `freshfold-db` PostgreSQL database from `render.yaml`.
 3. Set these environment variables when prompted:
 
 | Variable | Example |
 | --- | --- |
-| `DB_URL` | `jdbc:mysql://HOST:PORT/freshfold?sslMode=REQUIRED&serverTimezone=UTC` |
-| `DB_USER` | Database username |
-| `DB_PASSWORD` | Database password |
 | `APP_ADMIN_EMAIL` | Private production admin email |
 | `APP_ADMIN_PASSWORD` | Strong production password |
 | `CORS_ALLOWED_ORIGINS` | `https://your-app.vercel.app,https://USER.github.io` |
@@ -67,7 +64,7 @@ Render supplies `PORT` automatically. Verify deployment at:
 https://YOUR-RENDER-SERVICE.onrender.com/api/health
 ```
 
-The response should be `{"status":"ok"}`. Flyway creates and seeds the database during startup.
+The response should be `{"status":"ok"}`. Database host, port, name, user, and password are connected automatically by the Blueprint. Flyway creates and seeds PostgreSQL during startup.
 
 ## 3A. Deploy the frontend on Vercel
 

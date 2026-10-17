@@ -7,15 +7,34 @@ services:
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
-      - key: DB_URL
-        sync: false
+      - key: DB_HOST
+        fromDatabase:
+          name: freshfold-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: freshfold-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: freshfold-db
+          property: database
       - key: DB_USER
-        sync: false
+        fromDatabase:
+          name: freshfold-db
+          property: user
       - key: DB_PASSWORD
-        sync: false
+        fromDatabase:
+          name: freshfold-db
+          property: password
       - key: CORS_ALLOWED_ORIGINS
         sync: false
       - key: APP_ADMIN_EMAIL
         sync: false
       - key: APP_ADMIN_PASSWORD
         sync: false
+
+databases:
+  - name: freshfold-db
+    databaseName: freshfold
+    user: freshfold

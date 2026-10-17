@@ -151,9 +151,8 @@ public class OrderService {
 
     @Transactional
     public DeliveryAgentAdminResponse createDeliveryAgent(CreateDeliveryAgentRequest request) {
-        jdbc.update("insert into delivery_agents(name, phone, vehicle_number) values (?, ?, ?)",
-                request.name().trim(), request.phone().trim(), request.vehicleNumber().trim().toUpperCase(Locale.ROOT));
-        Long id = jdbc.queryForObject("select last_insert_id()", Long.class);
+        Long id = jdbc.queryForObject("insert into delivery_agents(name, phone, vehicle_number) values (?, ?, ?) returning id",
+                Long.class, request.name().trim(), request.phone().trim(), request.vehicleNumber().trim().toUpperCase(Locale.ROOT));
         return jdbc.queryForObject("select id, name, phone, vehicle_number, active from delivery_agents where id = ?",
                 (row, number) -> new DeliveryAgentAdminResponse(row.getLong("id"), row.getString("name"),
                         row.getString("phone"), row.getString("vehicle_number"), row.getBoolean("active")), id);

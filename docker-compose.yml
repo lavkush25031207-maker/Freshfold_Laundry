@@ -1,21 +1,19 @@
 services:
-  mysql:
-    image: mysql:8.4
+  postgres:
+    image: postgres:16-alpine
     environment:
-      MYSQL_DATABASE: freshfold
-      MYSQL_USER: freshfold
-      MYSQL_PASSWORD: freshfold
-      MYSQL_ROOT_PASSWORD: root
+      POSTGRES_DB: freshfold
+      POSTGRES_USER: freshfold
+      POSTGRES_PASSWORD: freshfold
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - freshfold_mysql:/var/lib/mysql
+      - freshfold_postgres:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      test: ["CMD-SHELL", "pg_isready -U freshfold -d freshfold"]
       interval: 5s
       timeout: 5s
       retries: 20
 
 volumes:
-  freshfold_mysql:
-
+  freshfold_postgres:
