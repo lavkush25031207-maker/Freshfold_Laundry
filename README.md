@@ -71,10 +71,10 @@ The response should be `{"status":"ok"}`. Flyway creates and seeds the database 
 
 ## 3A. Deploy the frontend on Vercel
 
-The root `vercel.json` configures the frontend build and SPA route fallback.
+The `frontend/vercel.json` file configures the frontend build and SPA route fallback.
 
 1. Import the GitHub repository into Vercel.
-2. Keep the project root as the repository root.
+2. Set the Vercel **Root Directory** to `frontend`.
 3. Add these environment variables for Production and Preview:
 
 | Variable | Value |
